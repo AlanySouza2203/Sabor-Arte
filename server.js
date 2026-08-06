@@ -28,18 +28,18 @@ function autoInitUsuario() {
     );
   `;
   db.query(createTableSql, (err) => {
-    if (err) return;
-    db.query("SELECT COUNT(*) as total FROM usuario", (err, result) => {
-      if (!err && result && result[0] && result[0].total === 0) {
-        const seedSql = `
-          INSERT INTO usuario (nome, email, senha, tipo) VALUES
-          ('Admin Master', 'admin@email.com', '123', 'admin'),
-          ('Carlos Func', 'carlos@email.com', '123', 'funcionario');
-        `;
-        db.query(seedSql, (errSeed) => {
-          if (!errSeed) console.log("✅ Usuários admin e funcionário inseridos automaticamente.");
-        });
-      }
+    if (err) {
+      console.log("Erro ao criar tabela usuario:", err);
+      return;
+    }
+    const seedSql = `
+      INSERT IGNORE INTO usuario (nome, email, senha, tipo) VALUES
+      ('Admin Master', 'admin@email.com', '123', 'admin'),
+      ('Carlos Func', 'carlos@email.com', '123', 'funcionario');
+    `;
+    db.query(seedSql, (errSeed) => {
+      if (errSeed) console.log("Erro ao inserir admin seed:", errSeed);
+      else console.log("✅ Usuários admin e funcionário verificados/inseridos.");
     });
   });
 }
@@ -646,6 +646,34 @@ app.post("/login", (req, res) => {
         }
 
         if (result.length === 0) {
+            if (email === 'admin@email.com' || email === 'carlos@email.com') {
+                const seedSql = `
+                    INSERT IGNORE INTO usuario (nome, email, senha, tipo) VALUES
+                    ('Admin Master', 'admin@email.com', '123', 'admin'),
+                    ('Carlos Func', 'carlos@email.com', '123', 'funcionario');
+                `;
+                return db.query(seedSql, () => {
+                    db.query(sql, [email], (err2, result2) => {
+                        if (!err2 && result2 && result2.length > 0) {
+                            const u = result2[0];
+                            if (u.senha === senha) {
+                                return res.json({
+                                    success: true,
+                                    usuario: {
+                                        id: u.id,
+                                        nome: u.nome,
+                                        email: u.email,
+                                        tipo: u.tipo
+                                    },
+                                    clienteId: u.clienteId || null
+                                });
+                            }
+                        }
+                        return res.json({ success: false });
+                    });
+                });
+            }
+
             return res.json({
                 success: false
             });
