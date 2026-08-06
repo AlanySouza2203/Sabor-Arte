@@ -45,6 +45,45 @@ function autoInitUsuario() {
 }
 autoInitUsuario();
 
+function autoInitItemServico() {
+  const createTableSql = `
+    CREATE TABLE IF NOT EXISTS item_servico (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      nome VARCHAR(100) NOT NULL,
+      tipo ENUM('comida','bebida','servico') NOT NULL,
+      categoria VARCHAR(50),
+      valor DECIMAL(10,2) NOT NULL,
+      imagem VARCHAR(255) DEFAULT 'https://via.placeholder.com/120',
+      status ENUM('ativo','inativo') DEFAULT 'ativo',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+    );
+  `;
+  db.query(createTableSql, (err) => {
+    if (err) {
+      console.log("Erro ao criar tabela item_servico:", err);
+      return;
+    }
+    db.query("SELECT COUNT(*) as total FROM item_servico", (errCount, result) => {
+      if (!errCount && result && result[0] && result[0].total === 0) {
+        const seedSql = `
+          INSERT INTO item_servico (nome, tipo, categoria, valor, imagem) VALUES
+          ('Hambúrguer', 'comida', 'principal', 15.00, 'https://i.pinimg.com/736x/c9/c5/01/c9c5013a47c78dde12d22a8659cdb945.jpg'),
+          ('Pizza', 'comida', 'principal', 30.00, 'https://i.pinimg.com/736x/93/50/c0/9350c0f6116de6745968b8d92d26ef4e.jpg'),
+          ('Sushi', 'comida', 'entrada', 40.00, 'https://i.pinimg.com/736x/63/46/10/6346107216394b1136e3243f4bc84efa.jpg'),
+          ('Bolo Pedaço', 'comida', 'sobremesa', 12.00, 'https://i.pinimg.com/736x/fe/50/6b/fe506b764c144d32330995c945a0f364.jpg'),
+          ('Macarrão', 'comida', 'principal', 28.00, 'https://i.pinimg.com/736x/96/4d/fb/964dfbd9d27f85e7b1fc155bccd04bac.jpg');
+        `;
+        db.query(seedSql, (errSeed) => {
+          if (errSeed) console.log("Erro ao inserir itens em item_servico:", errSeed);
+          else console.log("✅ Itens iniciais do cardápio inseridos em item_servico.");
+        });
+      }
+    });
+  });
+}
+autoInitItemServico();
+
 
 
 // ===============================
@@ -81,6 +120,23 @@ app.get("/itens", (req, res) => {
 
             return res.status(500).json({
                 erro: "Erro ao buscar itens"
+            });
+        }
+
+        if ((!result || result.length === 0) && (!categoria || categoria === "todos")) {
+            const seedSql = `
+                INSERT INTO item_servico (nome, tipo, categoria, valor, imagem) VALUES
+                ('Hambúrguer', 'comida', 'principal', 15.00, 'https://i.pinimg.com/736x/c9/c5/01/c9c5013a47c78dde12d22a8659cdb945.jpg'),
+                ('Pizza', 'comida', 'principal', 30.00, 'https://i.pinimg.com/736x/93/50/c0/9350c0f6116de6745968b8d92d26ef4e.jpg'),
+                ('Sushi', 'comida', 'entrada', 40.00, 'https://i.pinimg.com/736x/63/46/10/6346107216394b1136e3243f4bc84efa.jpg'),
+                ('Bolo Pedaço', 'comida', 'sobremesa', 12.00, 'https://i.pinimg.com/736x/fe/50/6b/fe506b764c144d32330995c945a0f364.jpg'),
+                ('Macarrão', 'comida', 'principal', 28.00, 'https://i.pinimg.com/736x/96/4d/fb/964dfbd9d27f85e7b1fc155bccd04bac.jpg');
+            `;
+            return db.query(seedSql, () => {
+                db.query(sql, params, (err2, result2) => {
+                    if (err2) return res.json([]);
+                    return res.json(result2);
+                });
             });
         }
 
