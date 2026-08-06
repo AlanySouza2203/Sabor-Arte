@@ -765,8 +765,8 @@ const usuario = JSON.parse(localStorage.getItem("usuario"))
 
 
 // PROTEÇÃO
-if (!usuario || usuario.tipo !== "admin" || !usuario.id) {
-  window.location.href = "../public/login.html"
+if (!usuario || (usuario.tipo !== "admin" && usuario.tipo !== "funcionario") || !usuario.id) {
+  window.location.href = "/login.html"
 }
 
 

@@ -10,8 +10,41 @@ app.use(express.json());
 
 // Servir arquivos estáticos
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/adm", express.static(path.join(__dirname, "adm")));
 app.use("/img", express.static(path.join(__dirname, "img")));
+
+// Auto-inicializar tabela usuario e admin padrão se o banco for novo
+function autoInitUsuario() {
+  const createTableSql = `
+    CREATE TABLE IF NOT EXISTS usuario (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      nome VARCHAR(100) NOT NULL,
+      telefone VARCHAR(20),
+      email VARCHAR(100) NOT NULL UNIQUE,
+      senha VARCHAR(255) NOT NULL,
+      tipo ENUM('admin','funcionario','cliente') DEFAULT 'cliente',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `;
+  db.query(createTableSql, (err) => {
+    if (err) return;
+    db.query("SELECT COUNT(*) as total FROM usuario", (err, result) => {
+      if (!err && result && result[0] && result[0].total === 0) {
+        const seedSql = `
+          INSERT INTO usuario (nome, email, senha, tipo) VALUES
+          ('Admin Master', 'admin@email.com', '123', 'admin'),
+          ('Carlos Func', 'carlos@email.com', '123', 'funcionario');
+        `;
+        db.query(seedSql, (errSeed) => {
+          if (!errSeed) console.log("✅ Usuários admin e funcionário inseridos automaticamente.");
+        });
+      }
+    });
+  });
+}
+autoInitUsuario();
+
 
 
 // ===============================
