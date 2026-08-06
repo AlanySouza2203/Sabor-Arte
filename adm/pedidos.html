@@ -649,7 +649,7 @@ async function carregarPedidos() {
         if (!usuario || !usuario.id) return
 
         let url =
-            `http://localhost:3000/pedidos?admin_id=${usuario.id}`
+            `/pedidos?admin_id=${usuario.id}`
 
         if (eventoId) {
             url += `&evento_id=${eventoId}`
@@ -823,7 +823,7 @@ function formatarMoeda(valor) {
 async function preparar(id) {
 
     await fetch(
-        `http://localhost:3000/pedidos/${id}/status`,
+        `/pedidos/${id}/status`,
         {
             method:"PUT",
 
@@ -844,7 +844,7 @@ async function preparar(id) {
 async function entregar(id) {
 
     await fetch(
-        `http://localhost:3000/pedidos/${id}/status`,
+        `/pedidos/${id}/status`,
         {
             method:"PUT",
 
@@ -885,7 +885,7 @@ function editarPedido(id) {
 async function alterarPedido(id, dados) {
 
     await fetch(
-        `http://localhost:3000/pedidos/${id}`,
+        `/pedidos/${id}`,
         {
             method:"PUT",
 
@@ -906,7 +906,7 @@ async function remover(id) {
     if (!confirm("Deseja remover este pedido?")) return
 
     await fetch(
-        `http://localhost:3000/pedidos/${id}`,
+        `/pedidos/${id}`,
         {
             method:"DELETE"
         }

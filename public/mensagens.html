@@ -370,7 +370,7 @@
     // Buscar pedidos do cliente
     async function carregarPedidos() {
         try {
-            const response = await fetch(`http://localhost:3000/pedidos?cliente_id=${clienteId}`);
+            const response = await fetch(`/pedidos?cliente_id=${clienteId}`);
             pedidos = await response.json();
             
             if (!Array.isArray(pedidos)) {
@@ -465,7 +465,7 @@
     // Carregar mensagens do pedido
     async function carregarMensagens(pedidoId) {
         try {
-            const response = await fetch(`http://localhost:3000/mensagens?pedido_id=${pedidoId}`);
+            const response = await fetch(`/mensagens?pedido_id=${pedidoId}`);
             const mensagens = await response.json();
             
             mensagensCache[pedidoId] = mensagens;
@@ -508,7 +508,7 @@
     // Marcar mensagens como lidas
     async function marcarComoLidas(pedidoId) {
         try {
-            await fetch(`http://localhost:3000/cliente/mensagens/marcar-lidas`, {
+            await fetch(`/cliente/mensagens/marcar-lidas`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ pedido_id: pedidoId, cliente_id: clienteId })
@@ -526,7 +526,7 @@
         if (!mensagem || !conversaAtual) return;
         
         try {
-            const response = await fetch("http://localhost:3000/cliente/enviar-mensagem", {
+            const response = await fetch("/cliente/enviar-mensagem", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -564,7 +564,7 @@
     // Atualizar badge de notificações
     async function atualizarBadgeTotal() {
         try {
-            const response = await fetch(`http://localhost:3000/cliente/mensagens/nao-lidas/count?cliente_id=${clienteId}`);
+            const response = await fetch(`/cliente/mensagens/nao-lidas/count?cliente_id=${clienteId}`);
             const data = await response.json();
             
             const badge = document.getElementById("badgeMsg");

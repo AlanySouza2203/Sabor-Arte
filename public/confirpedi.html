@@ -363,7 +363,7 @@ async function confirmarPedido() {
     // =========================
 
     const resPedido = await fetch(
-      "http://localhost:3000/pedidos",
+      "/pedidos",
       {
         method: "POST",
         headers: {
@@ -399,7 +399,7 @@ async function confirmarPedido() {
     console.log("📋 Criando orçamento:", orcamento);
 
     const resOrcamento = await fetch(
-      "http://localhost:3000/orcamentos",
+      "/orcamentos",
       {
         method: "POST",
         headers: {

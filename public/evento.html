@@ -437,7 +437,7 @@ document.getElementById("continuar").addEventListener("click", async (e) => {
   }
 
   try {
-    const resposta = await fetch("http://localhost:3000/eventos", {
+    const resposta = await fetch("/eventos", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

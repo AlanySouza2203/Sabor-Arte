@@ -743,7 +743,7 @@ async function salvarEvento() {
 
   try {
 
-    const resEvento = await fetch("http://localhost:3000/eventos", {
+    const resEvento = await fetch("/eventos", {
 
       method:"POST",
 
@@ -787,7 +787,7 @@ async function carregarEventos() {
   try {
 
     const res = await fetch(
-      `http://localhost:3000/eventos?admin_id=${usuario.id}`
+      `/eventos?admin_id=${usuario.id}`
     )
 
     eventos = await res.json()
@@ -812,7 +812,7 @@ async function removerEvento(id) {
   try {
 
     const res = await fetch(
-      `http://localhost:3000/eventos/${id}`,
+      `/eventos/${id}`,
       {
         method:"DELETE"
       }
@@ -940,7 +940,7 @@ async function carregarEventos() {
   try {
 
     const res = await fetch(
-      `http://localhost:3000/eventos?admin_id=${usuario.id}`
+      `/eventos?admin_id=${usuario.id}`
     )
 
     eventos = await res.json()

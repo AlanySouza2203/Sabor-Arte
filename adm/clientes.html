@@ -728,7 +728,7 @@ async function carregarClientes(){
   try{
 
     const res = await fetch(
-      `http://localhost:3000/clientes?admin_id=${usuario.id}`
+      `/clientes?admin_id=${usuario.id}`
     )
 
     clientes = await res.json()
@@ -873,7 +873,7 @@ async function salvar(){
       }
 
       resposta = await fetch(
-        `http://localhost:3000/clientes/${editando}`,
+        `/clientes/${editando}`,
         {
           method:"PUT",
           headers:{
@@ -898,7 +898,7 @@ async function salvar(){
       }
 
       resposta = await fetch(
-        "http://localhost:3000/clientes",
+        "/clientes",
         {
           method:"POST",
           headers:{
@@ -971,7 +971,7 @@ async function remover(id){
     // APAGA EVENTOS DO CLIENTE
     const eventos =
       await fetch(
-        `http://localhost:3000/eventos?cliente_id=${id}`
+        `/eventos?cliente_id=${id}`
       )
 
     const listaEventos =
@@ -980,7 +980,7 @@ async function remover(id){
     for(const evento of listaEventos){
 
       await fetch(
-        `http://localhost:3000/eventos/${evento.id}`,
+        `/eventos/${evento.id}`,
         {
           method:"DELETE"
         }
@@ -991,7 +991,7 @@ async function remover(id){
     // APAGA PEDIDOS DO CLIENTE
     const pedidos =
       await fetch(
-        `http://localhost:3000/pedidos?cliente_id=${id}`
+        `/pedidos?cliente_id=${id}`
       )
 
     const listaPedidos =
@@ -1000,7 +1000,7 @@ async function remover(id){
     for(const pedido of listaPedidos){
 
       await fetch(
-        `http://localhost:3000/pedidos/${pedido.id}`,
+        `/pedidos/${pedido.id}`,
         {
           method:"DELETE"
         }
@@ -1010,7 +1010,7 @@ async function remover(id){
 
     // APAGA CLIENTE
     await fetch(
-      `http://localhost:3000/clientes/${id}`,
+      `/clientes/${id}`,
       {
         method:"DELETE"
       }

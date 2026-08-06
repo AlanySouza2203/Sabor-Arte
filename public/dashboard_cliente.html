@@ -251,7 +251,7 @@
     // Carregar eventos do cliente
     async function carregarEventos() {
         try {
-            const response = await fetch(`http://localhost:3000/eventos?cliente_id=${clienteId}`);
+            const response = await fetch(`/eventos?cliente_id=${clienteId}`);
             eventos = await response.json();
             
             if (!Array.isArray(eventos)) {
@@ -346,7 +346,7 @@
     // Carregar contagem de mensagens não lidas
     async function carregarNotificacoes() {
         try {
-            const response = await fetch(`http://localhost:3000/cliente/mensagens/nao-lidas/count?cliente_id=${clienteId}`);
+            const response = await fetch(`/cliente/mensagens/nao-lidas/count?cliente_id=${clienteId}`);
             const data = await response.json();
             
             const badge = document.getElementById("badgeMsg");

@@ -717,7 +717,7 @@ async function carregarCardapio(categoria = "todos") {
 
     try {
 
-        let url = "http://localhost:3000/itens";
+        let url = "/itens";
 
         if(categoria !== "todos"){
             url += `?categoria=${categoria}`;

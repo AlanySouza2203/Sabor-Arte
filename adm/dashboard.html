@@ -784,7 +784,7 @@ async function carregarPedidos() {
   try {
 
 
-    let res = await fetch(`http://localhost:3000/pedidos?admin_id=${usuario.id}`)
+    let res = await fetch(`/pedidos?admin_id=${usuario.id}`)
 
 
     pedidos = await res.json()
@@ -814,7 +814,7 @@ async function carregarClientes() {
   try {
 
 
-    let res = await fetch(`http://localhost:3000/clientes?admin_id=${usuario.id}`)
+    let res = await fetch(`/clientes?admin_id=${usuario.id}`)
 
 
     clientes = await res.json()
@@ -843,7 +843,7 @@ async function carregarEventos() {
   try {
 
 
-    let res = await fetch(`http://localhost:3000/eventos?admin_id=${usuario.id}`)
+    let res = await fetch(`/eventos?admin_id=${usuario.id}`)
 
 
     eventos = await res.json()

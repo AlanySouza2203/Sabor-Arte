@@ -871,7 +871,7 @@ async function carregarOrcamentos() {
 
         console.log("Carregando orçamentos...");
 
-        const res = await fetch("http://localhost:3000/orcamentos");
+        const res = await fetch("/orcamentos");
 
         orcamentos = await res.json();
 
@@ -900,7 +900,7 @@ async function carregarEventos() {
         console.log("Carregando eventos para admin_id:", usuario.id);
 
         const res = await fetch(
-            `http://localhost:3000/eventos?admin_id=${usuario.id}`
+            `/eventos?admin_id=${usuario.id}`
         );
 
         eventos = await res.json();
@@ -934,7 +934,7 @@ async function carregarItens() {
 
     try {
 
-        const res = await fetch("http://localhost:3000/itens");
+        const res = await fetch("/itens");
 
         itensCardapio = await res.json();
 
@@ -1101,7 +1101,7 @@ async function salvarStatusOrcamento() {
     }
 
     try {
-        const res = await fetch(`http://localhost:3000/orcamentos/${editandoId}`, {
+        const res = await fetch(`/orcamentos/${editandoId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ status: status }) // Enviamos apenas o status
@@ -1155,7 +1155,7 @@ async function editarOrcamento(id) {
     try {
         // Buscar itens do orçamento
         console.log("Buscando itens do orçamento...");
-        const res = await fetch(`http://localhost:3000/orcamentos/${id}`);
+        const res = await fetch(`/orcamentos/${id}`);
         
         if (!res.ok) {
             throw new Error(`Erro HTTP: ${res.status}`);

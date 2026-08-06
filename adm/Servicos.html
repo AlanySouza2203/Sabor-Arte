@@ -802,7 +802,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
       try{
 
-        const res = await fetch("http://localhost:3000/itens");
+        const res = await fetch("/itens");
 
         itens = await res.json();
 
@@ -975,13 +975,13 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
       }
 
-      let url = "http://localhost:3000/itens";
+      let url = "/itens";
 
       let method = "POST";
 
       if(editando !== null){
 
-        url = `http://localhost:3000/itens/${editando}`;
+        url = `/itens/${editando}`;
 
         method = "PUT";
 
@@ -1053,7 +1053,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
       try{
 
-        await fetch(`http://localhost:3000/itens/${id}`,{
+        await fetch(`/itens/${id}`,{
           method:"DELETE"
         });
 

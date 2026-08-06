@@ -675,7 +675,7 @@ function formatarMoeda(valor) {
 }
 
 function carregarItens(orcamentoId) {
-    return fetch(`http://localhost:3000/cliente/orcamento/${orcamentoId}/itens`)
+    return fetch(`/cliente/orcamento/${orcamentoId}/itens`)
         .then(res => res.json())
         .then(itens => {
             const container = document.getElementById('itensContainer');
@@ -709,7 +709,7 @@ function carregarItens(orcamentoId) {
 
 async function carregarOrcamento() {
     try {
-const response = await fetch(`http://localhost:3000/cliente/orcamento/${clienteId}`);
+const response = await fetch(`/cliente/orcamento/${clienteId}`);
         const data = await response.json();
         
         if (!data.existe && !data.id) {
@@ -767,7 +767,7 @@ function falarEquipe() {
 
     async function carregarNotificacoes() {
         try {
-            const response = await fetch(`http://localhost:3000/cliente/mensagens/nao-lidas/count?cliente_id=${clienteId}`);
+            const response = await fetch(`/cliente/mensagens/nao-lidas/count?cliente_id=${clienteId}`);
             const data = await response.json();
             
             const badge = document.getElementById("badgeMsg");

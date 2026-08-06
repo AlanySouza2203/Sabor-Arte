@@ -1,19 +1,15 @@
 const mysql = require('mysql2');
 
-const connection = mysql.createConnection({
-  host: 'localhost',
-  port: 3306,           
-  user: 'root',
-  password: '',         
-  database: 'buffet_db' 
+const pool = mysql.createPool({
+  host: process.env.DB_HOST || 'localhost',
+  port: parseInt(process.env.DB_PORT || '3306', 10),
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'buffet_db',
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
-connection.connect((err) => {
-  if (err) {
-    console.error('Erro ao conectar:', err);
-  } else {
-    console.log('Conectado ao MySQL');
-  }
-});
-
-module.exports = connection;
+module.exports = pool;

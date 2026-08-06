@@ -1,27 +1,18 @@
 const express = require("express");
-const mysql = require("mysql2");
 const cors = require("cors");
+const path = require("path");
+const db = require("./db.js");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "buffet_db",
-  port: 3306
-});
+// Servir arquivos estáticos
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/adm", express.static(path.join(__dirname, "adm")));
+app.use("/img", express.static(path.join(__dirname, "img")));
 
-db.connect((err) => {
-  if (err) {
-    console.error("Erro ao conectar no MySQL:", err);
-  } else {
-    console.log("Conectado ao MySQL ");
-  }
-});
 
 // ===============================
 // TESTE SERVIDOR
@@ -1783,7 +1774,12 @@ app.get("/debug/orcamento/:id", (req, res) => {
 // START SERVER
 // ===============================
 
-app.listen(3000, () => {
-    console.log("🚀 Servidor rodando em http://localhost:3000");
-    console.log("📋 Banco de dados: buffet_db");
-});
+if (require.main === module) {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`🚀 Servidor rodando na porta ${PORT}`);
+        console.log(`📋 Banco de dados: ${process.env.DB_NAME || 'buffet_db'}`);
+    });
+}
+
+module.exports = app;
