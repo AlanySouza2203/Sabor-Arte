@@ -135,5 +135,7 @@ Toda vez que houver um `push` ou `merge` na branch `main`, o GitHub Actions irá
 2. Gerar o build e enviar o deploy automaticamente para a Vercel.
 
 ---
+acesso ao projeto:
+https://sabor-arte-gamma.vercel.app/
 
 © 2026 Sabor & Arte
