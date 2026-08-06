@@ -707,11 +707,18 @@ app.post("/login", (req, res) => {
 // CADASTRAR USUÁRIO
 app.post("/usuarios", (req, res) => {
 
-    const { nome, telefone, email, senha } = req.body;
+    const { nome, telefone, email, senha, tipo } = req.body;
+    const tipoUsuario = tipo === "funcionario" ? "funcionario" : "cliente";
 
-    if (!nome || !telefone || !email || !senha) {
+    if (!nome || !email || !senha) {
         return res.status(400).json({
             erro: "Preencha todos os campos"
+        });
+    }
+
+    if (tipoUsuario === "cliente" && !telefone) {
+        return res.status(400).json({
+            erro: "Preencha o telefone"
         });
     }
 
@@ -719,9 +726,9 @@ app.post("/usuarios", (req, res) => {
         `
         INSERT INTO usuario
         (nome, email, senha, tipo)
-        VALUES (?, ?, ?, 'cliente')
+        VALUES (?, ?, ?, ?)
         `,
-        [nome, email, senha],
+        [nome, email, senha, tipoUsuario],
         (err, resultUsuario) => {
 
             if (err) {
@@ -740,30 +747,38 @@ app.post("/usuarios", (req, res) => {
 
             const usuarioId = resultUsuario.insertId;
 
-            db.query(
-                `
-                INSERT INTO cliente
-                (nome, telefone, email, usuario_id, admin_id)
-                VALUES (?, ?, ?, ?, ?)
-                `,
-                [nome, telefone, email, usuarioId, 1],
-                (err2, resultCliente) => {
+            if (tipoUsuario === "cliente") {
+                db.query(
+                    `
+                    INSERT INTO cliente
+                    (nome, telefone, email, usuario_id, admin_id)
+                    VALUES (?, ?, ?, ?, ?)
+                    `,
+                    [nome, telefone, email, usuarioId, 1],
+                    (err2, resultCliente) => {
 
-                    if (err2) {
-                        console.log("Erro ao criar cliente:", err2);
+                        if (err2) {
+                            console.log("Erro ao criar cliente:", err2);
 
-                        return res.status(500).json({
-                            erro: "Usuário criado, mas erro ao criar cliente"
+                            return res.status(500).json({
+                                erro: "Usuário criado, mas erro ao criar cliente"
+                            });
+                        }
+
+                        res.json({
+                            mensagem: "Cadastro realizado com sucesso",
+                            usuarioId,
+                            clienteId: resultCliente.insertId
                         });
                     }
+                );
+                return;
+            }
 
-                    res.json({
-                        mensagem: "Cadastro realizado com sucesso",
-                        usuarioId,
-                        clienteId: resultCliente.insertId
-                    });
-                }
-            );
+            res.json({
+                mensagem: "Funcionário cadastrado com sucesso",
+                usuarioId
+            });
         }
     );
 });
@@ -1843,4 +1858,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = app;
+module.exports = app;
