@@ -14,9 +14,7 @@
 
 | Campo | Informação |
 |---|---|
-| **Instituição de Ensino** | A ser definido |
-| **Curso** | A ser definido |
-| **Disciplina** | A ser definido |
+| **Disciplina** | Projeto Integrador |
 | **Orientador** | Profº Hudson Neves |
 | **Autora do projeto** | Alany Souza |
 | **Modalidade** | Projeto individual |
