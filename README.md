@@ -18,7 +18,7 @@
 | **Orientador** | Profº Hudson Neves |
 | **Autora do projeto** | Alany Souza |
 | **Modalidade** | Projeto individual |
-| **Ano** | 2026 |
+
 
 ## 2. Descrição do Projeto
 
